@@ -344,3 +344,7 @@ healthchecksdb
 # CMake build trees
 /build*/
 CMakeUserPresets.json
+
+# Demo video: GitHub only plays videos uploaded as issue/PR attachments, never
+# files committed to the repo, so this stays out of git.
+/Docs/demo.mp4
