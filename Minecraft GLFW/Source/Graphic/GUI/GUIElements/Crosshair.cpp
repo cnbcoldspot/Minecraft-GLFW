@@ -1,5 +1,5 @@
-#include <ctime>
-#include <Windows.h>
+#include <chrono>
+#include <thread>
 
 #include "Crosshair.h"
 
@@ -22,10 +22,7 @@ void Crosshair::Trigger() {
 }
 
 void Crosshair::Untrigger(int time) {
-	clock_t alpha = clock();
-	while(clock() - alpha < time) {
-		Sleep(time);
-	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(time));
 	if(mode == CrosshairMode::Triggered) {
 		mode = CrosshairMode::Standard;
 		SetTexture(1);

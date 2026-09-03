@@ -2,7 +2,7 @@
 #include <FastNoiseLite.h>
 #include <thread>
 #include <iostream>
-#include "chunk.h"
+#include "Chunk.h"
 
 
 Chunk* GenerateChunk(Chunk& chunk, int x_chunk, int y_chunk, int z_chunk) {

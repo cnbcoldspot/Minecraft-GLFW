@@ -3,8 +3,8 @@
 
 #include "GUIMesh.h"
 
-#define ATLAS_W 64
-#define ATLAS_H 32
+#define GUI_ATLAS_W 64
+#define GUI_ATLAS_H 32
 
 class GUIElement
 {

@@ -41,15 +41,15 @@ void GUIElement::Push() {
 		// this is fucking retarded too
 		case 1:
 			vertices[2] = 0;    vertices[3] = 0;
-			vertices[6] = (float)32 / ATLAS_W;    vertices[7] = 0;
-			vertices[10] = (float)32 / ATLAS_W;  vertices[11] = ATLAS_H / 32;
-			vertices[14] = 0;  vertices[15] = ATLAS_H / 32;
+			vertices[6] = (float)32 / GUI_ATLAS_W;    vertices[7] = 0;
+			vertices[10] = (float)32 / GUI_ATLAS_W;  vertices[11] = GUI_ATLAS_H / 32;
+			vertices[14] = 0;  vertices[15] = GUI_ATLAS_H / 32;
 			break;
 		case 2:
-			vertices[2] = (float)32 / ATLAS_W + 0;    vertices[3] = 0;
+			vertices[2] = (float)32 / GUI_ATLAS_W + 0;    vertices[3] = 0;
 			vertices[6] = 1;    vertices[7] = 0;
-			vertices[10] = 1;  vertices[11] = ATLAS_H / 32;
-			vertices[14] = (float)32 / ATLAS_W + 0;  vertices[15] = ATLAS_H / 32;
+			vertices[10] = 1;  vertices[11] = GUI_ATLAS_H / 32;
+			vertices[14] = (float)32 / GUI_ATLAS_W + 0;  vertices[15] = GUI_ATLAS_H / 32;
 			break;
 	}
 	parent->Push((Vertex4<float>*)vertices, 4, indices, 6);

@@ -10,9 +10,9 @@
 #include "../FontRender/gltext.h"
 
 struct F3menu {
-	unsigned short ItemHandID;
-	unsigned short FPS;
-	glm::vec3 Position;
+	unsigned short ItemHandID = 0;
+	unsigned short FPS = 0;
+	glm::vec3 Position = glm::vec3(0.0f);
 };
 
 class PlayerGUI

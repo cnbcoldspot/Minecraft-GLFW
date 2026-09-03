@@ -340,3 +340,7 @@ ASALocalRun/
 healthchecksdb
 /Minecraft GLFW/Source/Shader/Shader - Copy.h
 /Minecraft GLFW/Source/Shader/Shader - Copy.cpp
+
+# CMake build trees
+/build*/
+CMakeUserPresets.json

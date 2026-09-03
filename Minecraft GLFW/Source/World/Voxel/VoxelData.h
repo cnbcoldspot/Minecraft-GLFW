@@ -8,7 +8,7 @@ This module is not used
 #include <fstream>
 #include <string>
 
-#include "../Minecraft GLFW/Source/ErrorHandling.h"
+#include "../../ErrorHandling.h"
 
 #include "VoxelsID.h"
 

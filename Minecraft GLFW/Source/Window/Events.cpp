@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include"Events.h"
 
 #define SHIFT_MOUSE_BUTTON 1024

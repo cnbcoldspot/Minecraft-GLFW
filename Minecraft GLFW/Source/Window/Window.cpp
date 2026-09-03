@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "../ErrorHandling.h"
+
 GLFWwindow* Window::window;
 GLFWmonitor* Window::monitor;
 int Window::Width = 0;
@@ -19,32 +21,64 @@ int Window::Initialize(const char* title, bool fullscreen) {
 	if(monitor == nullptr) {
 		std::cout << "[Window] Failed to create GLFW Window" << std::endl;
 		glfwTerminate();
-		__debugbreak;
+		DEBUGBREAK();
 	}
 	int m_width = 800, m_height = 600;
 	int xpos = 0, ypos = 0;
-	glfwGetMonitorWorkarea(monitor, &xpos, &ypos, &m_width, &m_height);
 
 	//Create a window
 	if(fullscreen) {
+		/*
+			Fullscreen has to be sized from the monitor's video mode. The work
+			area excludes taskbars and panels, so using it here would ask for a
+			resolution the monitor has no mode for.
+		*/
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+		if(mode == nullptr) {
+			std::cout << "[Window] Failed to query the monitor video mode" << std::endl;
+			glfwTerminate();
+			DEBUGBREAK();
+		}
+		m_width = mode->width;
+		m_height = mode->height;
 		window = glfwCreateWindow(m_width, m_height, title, monitor, nullptr);
 	}
 	else {
+		glfwGetMonitorWorkarea(monitor, &xpos, &ypos, &m_width, &m_height);
 		window = glfwCreateWindow(m_width, m_height, title, nullptr, nullptr);
 	}
 	if (window == nullptr) {
 		std::cout << "[Window] Failed to create GLFW Window" << std::endl;
 		glfwTerminate();
-		__debugbreak;
+		DEBUGBREAK();
 	}
 	glfwMakeContextCurrent(window);
 
+	/*
+		Set the swap interval explicitly. Nothing here used to call
+		glfwSwapInterval(), so the frame rate depended on the driver default -
+		uncapped on Windows, but locked to the refresh rate by Mesa on Linux.
+	*/
+	SetVSync(false);
+
 	//Initializing GLEW
 	glewExperimental = GL_TRUE;
-	if (glewInit() != GLEW_OK) {
-		std::cout << "[Window] Failed to initialize GLEW" << std::endl;
-		__debugbreak;
+	GLenum glewStatus = glewInit();
+	/*
+		Under Wayland GLFW hands us an EGL context and GLEW's GLX probe fails,
+		even though every entry point it resolved is valid. That one error is
+		not fatal; anything else is.
+	*/
+	if (glewStatus != GLEW_OK && glewStatus != GLEW_ERROR_NO_GLX_DISPLAY) {
+		std::cout << "[Window] Failed to initialize GLEW: " << glewGetErrorString(glewStatus) << std::endl;
+		DEBUGBREAK();
 	}
+	/*
+		Take the size from the framebuffer rather than from what we asked for:
+		with GLFW_SCALE_TO_MONITOR the two differ on HiDPI displays, and a
+		fullscreen request can be satisfied by a nearby video mode.
+	*/
+	glfwGetFramebufferSize(window, &m_width, &m_height);
 	glViewport(0, 0, m_width, m_height);
 
 	Window::Width = m_width;
@@ -75,4 +109,8 @@ void Window::SwapBuffers() {
 
 void Window::SetCursorMode(int Mode) {
 	glfwSetInputMode(window, GLFW_CURSOR, Mode);
+}
+
+void Window::SetVSync(bool enabled) {
+	glfwSwapInterval(enabled ? 1 : 0);
 }

@@ -30,7 +30,16 @@ Shader* CreateShaderProgram(std::string vertexFile, std::string fragmentFile) {
 	fShaderFile.exceptions(std::ifstream::badbit);
 	try {
 		vShaderFile.open(vertexFile);
+		if (!vShaderFile.is_open()) {
+			std::cout << "[Shader] Fail read " << vertexFile << std::endl;
+			return nullptr;
+		}
+
 		fShaderFile.open(fragmentFile);
+		if (!fShaderFile.is_open()) {
+			std::cout << "[Shader] Fail read " << fragmentFile << std::endl;
+			return nullptr;
+		}
 		std::stringstream vShadertream, fShadertream;
 
 		vShadertream << vShaderFile.rdbuf();

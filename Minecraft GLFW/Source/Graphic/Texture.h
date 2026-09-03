@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <SOIL/SOIL.h>
 #include <GL/glew.h>
 
 class Texture {

@@ -6,7 +6,9 @@
 
 #include "../ErrorHandling.h"
 
-BigMesh::BigMesh() {
+// The destructor free()s vertexArr and indexArr, so they cannot be left
+// indeterminate here - Construct() fills them in later.
+BigMesh::BigMesh() : vertexArr(nullptr), indexArr(nullptr) {
 }
 
 BigMesh::BigMesh(unsigned int max_vCount, unsigned int max_eCount, Texture* tex) : max_vCount(max_vCount), max_eCount(max_eCount), vCount(0), eCount(0) {

@@ -1,9 +1,18 @@
-#pragma comment(linker, "/STACK:67108864")
-
-#include <Windows.h>
+/*
+	A 64 MB main-thread stack, kept from the original Visual Studio build.
+	Linux has no link-time equivalent (the main stack comes from the shell's
+	RLIMIT_STACK), but nothing here needs it: chunks and voxels are all
+	heap-allocated, and the default 8 MB is plenty.
+*/
+#ifdef _WIN32
+#	pragma comment(linker, "/STACK:67108864")
+#	include <Windows.h>
+#endif
 #include <iostream>
 #include <ctime>
 #include <future>
+#include <filesystem>
+#include <system_error>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -41,14 +50,56 @@ using namespace glm;
 **********************************************************
 */
 
+
+/*
+	Shaders and textures are opened by paths relative to the working
+	directory ("Resource/Shader/..."), which used to mean "run it from the
+	Visual Studio project directory". Anchor the working directory to the
+	executable instead - the build copies Resource/ next to the binary - so
+	the game runs the same however it was launched.
+*/
+static void SetWorkingDirectoryToExecutable() {
+	std::error_code error;
+	std::filesystem::path executable;
+
+#ifdef _WIN32
+	wchar_t buffer[MAX_PATH];
+	DWORD length = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
+	if(length == 0 || length == MAX_PATH) {
+		// [main] Could not locate the executable, keep the current directory
+		return;
+	}
+	executable = std::filesystem::path(buffer, buffer + length);
+#else
+	executable = std::filesystem::read_symlink("/proc/self/exe", error);
+	if(error) {
+		// [main] No /proc, keep the current directory
+		return;
+	}
+#endif
+
+	std::filesystem::current_path(executable.parent_path(), error);
+	if(error) {
+		std::cerr << "[main] Failed to enter " << executable.parent_path() << std::endl;
+	}
+}
+
 int main() {
+
+	SetWorkingDirectoryToExecutable();
 
 	srand(time(0));
 	std::ios_base::sync_with_stdio(0);
 
 	//Window initialization
-	Window::Initialize("Hello world", false);
+	Window::Initialize("Hello world", true);
 	Events::Initialize();
+
+	/*
+		The frame rate is uncapped, which is what the F3 counter is there to
+		show. Window::SetVSync(true) locks it to the display refresh rate
+		instead - quieter, and no tearing.
+	*/
 
 	//Initializatioo of main Shader
 	Shader* shader = CreateShaderProgram("Resource/Shader/mainVertex.glsl", "Resource/Shader/mainFragment.glsl");
@@ -100,11 +151,11 @@ int main() {
 	PlayerGUI pGUI(guiTextureAtlas, (float)Window::Width / (float)Window::Height);
 
 	Player Steve(&world, &pGUI);
-	
+
 
 	// launching asynchronous task to update all chunks once after 3000ms
-	auto fut = std::async(std::launch::async, &Call_UpdateChunks, std::ref(world), 3000); 
-	
+	auto fut = std::async(std::launch::async, &Call_UpdateChunks, std::ref(world), 3000);
+
 	//Main loop
 	while (!Window::WindowShouldClose()) {
 
@@ -115,7 +166,7 @@ int main() {
 		shader->Unbind();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		//Draw here
 		world.Draw(shader);
 		Steve.DrawGUI(guiShader);
@@ -123,8 +174,8 @@ int main() {
 		Events::PullEvents();
 		Window::SwapBuffers();
 	}
-	
-	
+
+
 
 	delete shader;
 	delete guiShader;

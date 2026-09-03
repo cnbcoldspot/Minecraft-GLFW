@@ -1,5 +1,12 @@
 #include "Texture.h"
 
+/*
+	stb_image replaces SOIL, which was a Windows-only prebuilt binary.
+	This is the only translation unit that pulls in the implementation.
+*/
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 
 
 Texture* CreateTexture(std::string File) {
@@ -15,7 +22,9 @@ Texture* CreateTexture(std::string File) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     int width, height;
-    unsigned char* image = SOIL_load_image(File.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+    int channels;
+    // 4 = force RGBA, what SOIL_LOAD_RGBA used to do
+    unsigned char* image = stbi_load(File.c_str(), &width, &height, &channels, 4);
     if (image == NULL) {
         std::cout << "[Texture] Fail read " << File << std::endl;
         glDeleteTextures(1, &texture);
@@ -23,7 +32,7 @@ Texture* CreateTexture(std::string File) {
     }
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
-    SOIL_free_image_data(image);
+    stbi_image_free(image);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     return new Texture(texture, width, height);

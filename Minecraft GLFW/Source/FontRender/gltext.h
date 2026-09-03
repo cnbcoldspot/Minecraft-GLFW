@@ -549,6 +549,15 @@ GLT_API GLfloat gltGetTextWidth(const GLTtext *text, GLfloat scale)
 #endif
 		}
 
+		/*
+			gltIsCharacterSupported() reports '\t' as supported, but neither this
+			loop nor gltCountDrawableCharacters() handles it, so the index below
+			goes negative and the glyph read (and the vertex write that follows)
+			runs outside its buffer. Guard the table.
+		*/
+		if ((c < _gltFontGlyphMinChar) || (c > _gltFontGlyphMaxChar))
+			continue;
+
 		glyph = _gltFontGlyphs2[c - _gltFontGlyphMinChar];
 
 		width += (GLfloat)glyph.w;
@@ -747,6 +756,15 @@ GLT_API void _gltUpdateBuffers(GLTtext *text)
 			continue;
 #endif
 		}
+
+		/*
+			gltIsCharacterSupported() reports '\t' as supported, but neither this
+			loop nor gltCountDrawableCharacters() handles it, so the index below
+			goes negative and the glyph read (and the vertex write that follows)
+			runs outside its buffer. Guard the table.
+		*/
+		if ((c < _gltFontGlyphMinChar) || (c > _gltFontGlyphMaxChar))
+			continue;
 
 		glyph = _gltFontGlyphs2[c - _gltFontGlyphMinChar];
 

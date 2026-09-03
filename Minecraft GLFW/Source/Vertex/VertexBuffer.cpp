@@ -1,5 +1,5 @@
 #include <GL/glew.h>
-#include <iostream>;
+#include <iostream>
 
 #include "VertexBuffer.h"
 #include "../ErrorHandling.h"

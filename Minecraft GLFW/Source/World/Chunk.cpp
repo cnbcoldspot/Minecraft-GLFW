@@ -10,6 +10,7 @@ Chunk::Chunk(const Chunk& val) : vox(val.vox), mesh(val.mesh), shard(val.shard),
 }
 
 Chunk::Chunk(Texture* textureAtlas, int posx, int posy, int posz){
+	neighbor = nullptr; // set by World via SetNeighbors()
 	mesh.Construct(CHUNK_W * CHUNK_H * CHUNK_W * 4 * 6, CHUNK_W * CHUNK_H * CHUNK_W * 6 * 6, textureAtlas);
 	shard.Construct(&mesh);
 

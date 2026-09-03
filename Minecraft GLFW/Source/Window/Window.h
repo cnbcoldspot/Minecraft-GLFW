@@ -1,7 +1,9 @@
 #pragma once
 
 //GLEW in Satic Mode
-#define GLEW_STATIC 
+#ifndef GLEW_STATIC
+#	define GLEW_STATIC
+#endif
 
 #include <iostream>
 #include <GL/glew.h>
@@ -31,6 +33,10 @@ public:
 	
 	//Method for changing display buffers
 	static void SwapBuffers();
+
+	//Frame rate limiting. Off means the render loop runs as fast as it can;
+	//on locks it to the display refresh rate.
+	static void SetVSync(bool enabled);
 
 	static void SetCursorMode(int mode);
 };

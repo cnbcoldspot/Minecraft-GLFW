@@ -23,9 +23,7 @@ void Voxel::Set(unsigned short int id, textureVariant texVar) {
 }
 
 unsigned short int Voxel::GetID() {
-	if(this) {
-		return id;
-	}
+	return id;
 }
 
 textureVariant* Voxel::Get_tVar() {

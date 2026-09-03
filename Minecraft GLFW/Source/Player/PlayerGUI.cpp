@@ -17,7 +17,7 @@ PlayerGUI::PlayerGUI(Texture* guitexture, float windowscale) {
 	StartupText = gltCreateText();
 
 	std::string PreferredMsg = 
-		"\tControl buttons helper \n[W] [A] [S] [D] - Walking \n[Mouse Wheel] - Selecting a id of block for installation \n[F3] - Debug menu on / off \n[Space] - Jump \n[Ctrl] - Deceleration \n[Shift] - Boost \n[Tab] - Cursor on / off \n[ESC] - Close Game \n[X] - Close Control buttons helper \n[Left mouse button] - Break block \n[Right mouse button] - Place block";
+		"    Control buttons helper \n[W] [A] [S] [D] - Walking \n[Mouse Wheel] - Selecting a id of block for installation \n[F3] - Debug menu on / off \n[Space] - Jump \n[Ctrl] - Deceleration \n[Shift] - Boost \n[Tab] - Cursor on / off \n[ESC] - Close Game \n[X] - Close Control buttons helper \n[Left mouse button] - Break block \n[Right mouse button] - Place block";
 	gltSetText(StartupText, PreferredMsg.c_str());
 }
 

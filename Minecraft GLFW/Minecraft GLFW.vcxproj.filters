@@ -203,9 +203,6 @@
     <ClInclude Include="Source\World\Voxel\VoxelsID.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Source\gltext.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Player\PlayerGUI.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -229,15 +226,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resource\Textures\1.png">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="Resource\Textures\2.png">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="Resource\Textures\3.png">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
     <Image Include="Resource\Textures\GUIAtlas.png">
       <Filter>Файлы ресурсов</Filter>
     </Image>
@@ -245,25 +233,12 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="Resource\Shader\mainVertex.glsl" />
-    <Image Include="Resource\Textures\Untitled.png">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="Resource\Textures\Reticle.png">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Resource\Shader\guiShader_fragment.glsl" />
-    <CustomBuild Include="Resource\Shader\guiShader_vertex.glsl" />
     <CustomBuild Include="Resource\Shader\mainFragment.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource\Shader\crosshairFragment.glsl" />
-    <None Include="Resource\Shader\crosshairVertex.glsl" />
     <None Include="Resource\Shader\guiShaderFragment.glsl" />
     <None Include="Resource\Shader\guiShaderVertex.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Resource\rs.ttf" />
   </ItemGroup>
 </Project>
